@@ -2,7 +2,7 @@
 
 from numanalytica.core.base_solver import BaseSolver
 from numanalytica.core.exceptions import (
-    BrackettingError,
+    BracketingError,
     ConvergenceError,
     DifferentiationError,
     DivergenceError,
@@ -31,7 +31,7 @@ __all__ = [
     "ConvergenceError",
     "StagnationError",
     "DivergenceError",
-    "BrackettingError",
+    "BracketingError",
     "ODEError",
     "StiffnessError",
     "InitialValueError",
