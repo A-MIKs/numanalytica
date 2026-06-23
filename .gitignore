@@ -70,3 +70,5 @@ demo_output.txt
 stability_comparison.png
 .ipynb_checkpoints/
 .tmp.driveupload/
+test_fixes.py
+verify_fixes.py
