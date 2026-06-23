@@ -57,10 +57,10 @@ science = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/amiks262/numanalytica"
-Repository = "https://github.com/amiks262/numanalytica"
+Homepage = "https://github.com/A-MIKs/numanalytica"
+Repository = "https://github.com/A-MIKs/numanalytica"
 Documentation = "https://numanalytica.readthedocs.io"
-Issues = "https://github.com/amiks262/numanalytica/issues"
+Issues = "https://github.com/A-MIKs/numanalytica/issues"
 
 [tool.setuptools]
 package-dir = { "" = "src" }

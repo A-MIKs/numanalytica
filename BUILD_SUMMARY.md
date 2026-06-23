@@ -46,7 +46,7 @@ src/numanalytica/
 
 ### API Exports (42 items)
 
-**Exceptions (12):** NumanalyticalError, RootFindingError, ConvergenceError, StagnationError, DivergenceError, BrackettingError, ODEError, StiffnessError, InitialValueError, StepSizeError, DifferentiationError, SingularJacobianError, StabilityAnalysisError
+**Exceptions (12):** NumanalyticalError, RootFindingError, ConvergenceError, StagnationError, DivergenceError, BracketingError, ODEError, StiffnessError, InitialValueError, StepSizeError, DifferentiationError, SingularJacobianError, StabilityAnalysisError
 
 **Results (3):** SolverResult, RootResult, IntegrationResult
 

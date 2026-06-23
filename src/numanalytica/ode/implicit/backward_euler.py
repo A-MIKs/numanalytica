@@ -202,6 +202,11 @@ class BackwardEuler(BaseIntegrator):
 
         elapsed = time.time() - start_time
 
+        # Record actual step sizes (handle final step that may be smaller)
+        actual_step_sizes = []
+        for i in range(1, len(t_solution)):
+            actual_step_sizes.append(t_solution[i] - t_solution[i - 1])
+
         result = IntegrationResult(
             solution=y,
             converged=True,
@@ -215,7 +220,7 @@ class BackwardEuler(BaseIntegrator):
             iteration_history=self.logger.to_dict_list(),
             function_evaluations=self._rhs_evals,
             jacobian_evaluations=self._jacobian_evals,
-            step_sizes=[h] * iteration,
+            step_sizes=actual_step_sizes,
             newton_iterations=self._newton_iters,
         )
 
