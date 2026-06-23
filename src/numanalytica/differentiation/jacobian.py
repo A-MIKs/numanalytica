@@ -225,7 +225,7 @@ def check_jacobian_quality(
         Quality assessment with keys:
         - "condition_number": float
         - "is_singular": bool
-        - "is_illedconditioned": bool
+        - "is_ill_conditioned": bool
         - "rank": int
         - "rank_deficient": bool
         - "warnings": list of str
@@ -238,7 +238,7 @@ def check_jacobian_quality(
         return {
             "condition_number": np.inf,
             "is_singular": True,
-            "is_illconditioned": True,
+            "is_ill_conditioned": True,
             "rank": 0,
             "rank_deficient": True,
             "warnings": [f"Error computing condition: {e}"],
@@ -247,17 +247,17 @@ def check_jacobian_quality(
     rank = np.linalg.matrix_rank(J)
     m, n = J.shape
     is_singular = rank < min(m, n)
-    is_illconditioned = cond > condition_threshold
+    is_ill_conditioned = cond > condition_threshold
 
     if is_singular:
         warnings.append(f"Jacobian is singular (rank={rank}, expected >={min(m,n)})")
-    if is_illconditioned:
+    if is_ill_conditioned:
         warnings.append(f"Jacobian is ill-conditioned (κ={cond:.2e})")
 
     return {
         "condition_number": cond,
         "is_singular": is_singular,
-        "is_illconditioned": is_illconditioned,
+        "is_ill_conditioned": is_ill_conditioned,
         "rank": rank,
         "rank_deficient": rank < min(m, n),
         "warnings": warnings,

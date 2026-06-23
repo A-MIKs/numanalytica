@@ -36,7 +36,7 @@ class DivergenceError(RootFindingError):
     pass
 
 
-class BrackettingError(RootFindingError):
+class BracketingError(RootFindingError):
     """Raised when a bracketing method cannot find a sign change."""
 
     pass

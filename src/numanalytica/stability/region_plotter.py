@@ -14,9 +14,7 @@ Theory:
 
 from typing import Callable, Tuple
 
-import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import Circle
 
 
 class StabilityRegion:
@@ -138,6 +136,9 @@ class StabilityRegion:
         fig, ax : matplotlib Figure and Axes
             The created figure and axes.
         """
+        import matplotlib.pyplot as plt
+        from matplotlib.patches import Circle
+        
         if ax is None:
             fig, ax = plt.subplots(figsize=(10, 8))
         else:
@@ -298,6 +299,8 @@ class StabilityComparison:
         fig, axes : matplotlib Figure and Axes
             The created figure and axes grid.
         """
+        import matplotlib.pyplot as plt
+        
         n_methods = len(self.methods)
         n_cols = min(3, n_methods)
         n_rows = (n_methods + n_cols - 1) // n_cols

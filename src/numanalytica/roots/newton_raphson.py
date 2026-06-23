@@ -105,20 +105,25 @@ class NewtonRaphson(BaseSolver):
         self._derivative_evals = 0
 
         # Initial guess
-        if x0 is None and bracket is None:
-            try:
-                interval = get_initial_interval(self.f, args=args, **kwargs)
-                x0 = sum(interval) / 2
-            except ValueError as e:
-                return RootResult(
-                    solution=None,
-                    converged=False,
-                    iterations=0,
-                    residual=np.inf,
-                    tolerance=tol,
-                    message=f"Failed to find initial bracket: {e}",
-                    elapsed_time=time.time() - start_time,
-                )
+        if x0 is None:
+            if bracket is not None:
+                # Use bracket midpoint as initial guess
+                x0 = sum(bracket) / 2
+            else:
+                # Attempt automatic bracketing
+                try:
+                    interval = get_initial_interval(self.f, args=args, **kwargs)
+                    x0 = sum(interval) / 2
+                except ValueError as e:
+                    return RootResult(
+                        solution=None,
+                        converged=False,
+                        iterations=0,
+                        residual=np.inf,
+                        tolerance=tol,
+                        message=f"Failed to find initial bracket: {e}",
+                        elapsed_time=time.time() - start_time,
+                    )
 
         x = float(x0)
         converged = False

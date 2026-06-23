@@ -33,11 +33,7 @@ src/numanalytica/
 ## Installation
 
 ```bash
-# Install in development mode
-pip install -e .
-
-# Or manually
-cd src
+# Install in development mode (from repo root)
 pip install -e .
 ```
 
