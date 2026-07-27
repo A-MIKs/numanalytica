@@ -259,38 +259,6 @@ python demo.py
 
 ---
 
-## For Your Thesis (Chapter 4: Implementation & Results)
-
-### Sections to Write
-
-**4.1 Architecture**
-- Explain the modular design
-- Show class diagrams (BaseSolver inheritance)
-- Reference actual code
-
-**4.2 Complex Step Differentiation**
-- Mathematical derivation (already in 3.2)
-- Show accuracy plots vs finite differences
-- Code example
-
-**4.3 Backward Euler Implementation**
-- Algorithm pseudocode
-- Code walkthrough
-- Newton iteration details
-
-**4.4 Results**
-- Van der Pol integration plots
-- Stability region visualizations
-- Performance metrics
-- Iteration histories
-
-**4.5 Validation**
-- Convergence studies
-- Comparison with known solutions
-- Benchmark against SciPy (if comparable)
-
----
-
 ## Example: Full Workflow
 
 ```python
@@ -356,7 +324,6 @@ print(table_latex)  # Paste into thesis!
 - ✅ Benchmarks (Van der Pol)
 - ⏳ Tests (pytest suite)
 - ⏳ Documentation (Sphinx + notebooks)
-- ⏳ Chapter 4 thesis write-up
 
 ---
 
@@ -392,9 +359,9 @@ Supervisor: Dr. Hamzat, Jamiu O.
 ## Contact
 
 📧 amiks262@gmail.com  
-🔗 [GitHub](https://github.com/amiks262/numanalytica)
+🔗 [GitHub](https://github.com/A-MIKs/numanalytica)
 
 ---
 
-**Last Updated:** April 2026  
+**Last Updated:** July 2026  
 **Status:** Active Development
