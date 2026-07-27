@@ -130,9 +130,8 @@ If you use NumAnalytica in academic work, please cite:
 
 ```
 Kola-Ilugbo Ayomikun (2026). 
-"Implementation and Stability Analysis of Backward Differentiation Formulas 
-for Stiff Differential Equations: The NumAnalytica Library Approach."
-B.Sc. Thesis, [University Name].
+"Implementation and Stability Analysis of Backward Differentiation Formulas for Stiff Differential Equations: The NumAnalytica Library Approach."
+B.Sc. Thesis, University of Lagos.
 ```
 
 ---
