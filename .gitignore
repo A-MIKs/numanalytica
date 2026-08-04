@@ -68,6 +68,7 @@ Thumbs.db
 # Project-specific
 demo_output.txt
 stability_comparison.png
+Appendix_A_v3.pdf
 .ipynb_checkpoints/
 .tmp.driveupload/
 test_fixes.py

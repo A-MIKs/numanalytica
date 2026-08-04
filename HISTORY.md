@@ -20,6 +20,8 @@
 - Deferred matplotlib imports in `stability/region_plotter.py` (eliminates heavy import overhead for solver-only users)
 - Simplified README install instructions (removed unnecessary `cd src` step)
 - Updated project URLs in pyproject.toml to match GitHub repository (A-MIKs/numanalytica)
+- Added appendix-aligned runnable benchmark examples under `examples/` for thesis reproducibility
+- Introduced a mathematically honest linear two-time-scale stiff benchmark to document solver behavior without overstating Robertson support
 
 ### API Stability
 - 43 public exports maintained across core, differentiation, roots, ODE, and stability modules

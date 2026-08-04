@@ -119,6 +119,18 @@ fig, ax = region.plot_region()
 plt.show()  # Beautiful complex-plane visualization
 ```
 
+### 4. Example Appendix Benchmarks
+
+The repository now includes runnable thesis-aligned example scripts under `examples/` that reproduce the appendix figures used for validation:
+
+- `appendix_linear_stiff.py` — linear two-time-scale stiff benchmark
+- `appendix_problem_1.py` — scalar decay benchmark
+- `appendix_problem_2.py` — nonlinear Newton / phase-portrait experiment
+- `appendix_problem_4.py` — convergence-order verification
+- `appendix_stiff_van_der_pol.py` — stiffness comparison for different `mu`
+
+These scripts generate the figure outputs in `examples/figures/` and can be run directly from the repository root.
+
 ---
 
 ## Core Components
@@ -136,7 +148,7 @@ fprime = complex_step_derivative(f, x=1.5, h=1e-20)
 # Error ~ 10^-16 (much better than finite differences!)
 ```
 
-**Why it matters for your thesis:**
+**Why it matters:**
 - Avoids the round-off vs. truncation error balance problem
 - Jacobians for Newton-Raphson are accurate to machine precision
 - Enables fast, robust convergence of implicit solvers
@@ -153,7 +165,7 @@ All methods extend `BaseSolver`:
 
 ### 🔷 Implicit ODE Solver (ode/implicit/backward_euler.py)
 
-The **heart** of your thesis:
+The **heart**:
 
 1. **Backward Euler step:**
    $$y_{n+1} = y_n + h \cdot f(t_{n+1}, y_{n+1})$$
