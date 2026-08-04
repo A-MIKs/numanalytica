@@ -1,5 +1,20 @@
 # NumAnalytica Release History
 
+## [0.3.0] - 2026-08-04
+
+### Major Updates
+- Added a runnable appendix benchmark suite under `examples/` for thesis reproducibility and figure generation
+- Introduced a mathematically honest linear two-time-scale stiff benchmark for experimental validation of stiffness handling
+- Refined GitHub-facing documentation and repository hygiene so the public project page matches the current software state
+- Improved publication-readiness by cleaning repository artifacts and documenting the benchmark scope more accurately
+
+### Validation Highlights
+- Verified all appendix example scripts execute successfully from the repository root
+- Confirmed generated figures are reproducible under `examples/figures/`
+- Clarified that the current implementation supports a stable stiff linear benchmark while not claiming full canonical Robertson robustness
+
+---
+
 ## [0.2.0] - 2026-06-23
 
 ### Major Features

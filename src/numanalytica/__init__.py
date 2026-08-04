@@ -15,7 +15,7 @@ Key Features:
 
 __author__ = "Kola-Ilugbo Ayomikun"
 __email__ = "amiks262@gmail.com"
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 # Benchmarks module
 from numanalytica.benchmarks import van_der_pol, van_der_pol_jacobian
