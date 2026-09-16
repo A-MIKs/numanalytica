@@ -2,14 +2,14 @@
 
 ## Overview
 
-**NumAnalytica** is a "glass-box" Python numerical analysis library that implements Backward Differentiation Formulas (BDF) for solving stiff ordinary differential equations. Unlike production libraries like SciPy, it **exposes all internal algorithmic steps** for educational transparency.
+**NumAnalytica** is a pedagogical Python library for the numerical solution of stiff ordinary differential equations. The project focuses on transparent, educational implementations of implicit methods, especially Backward Differentiation Formulas (BDFs), and it exposes the internal algorithmic steps so that the numerical behaviour can be inspected directly.
 
-This library is the **software artifact** for the final-year B.Sc. thesis:
-> *"Implementation and Stability Analysis of Backward Differentiation Formulas for Stiff Differential Equations: The NumAnalytica Library Approach"*
+This repository forms the software component of the final-year B.Sc. thesis:
+> *Implementation and Stability Analysis of Backward Differentiation Formulas: The NumAnalytica Library Approach*
 
-### Key Innovation: Complex Step Differentiation
+### Key Feature: Complex Step Differentiation
 
-The framework uses **Complex Step Differentiation (CSD)** to compute Jacobians with **machine precision** (errors ~10⁻¹⁵), eliminating subtractive cancellation errors common in standard finite differences. This is critical for accurate Newton-Raphson iterations in implicit solvers.
+The library uses **Complex Step Differentiation (CSD)** to compute Jacobians with near-machine-precision accuracy. This reduces the subtractive-cancellation error that commonly affects finite-difference approximations and improves the reliability of Newton iterations in implicit solvers.
 
 ---
 
@@ -25,7 +25,7 @@ src/numanalytica/
 │   └── implicit/           # Backward Euler (A-stable BDF)
 ├── stability/              # A-Stability visualization
 ├── benchmarks/             # Van der Pol oscillator
-└── visualization/          # Future plotting utilities
+└── visualization/          # Plotting utilities
 ```
 
 ---
@@ -121,15 +121,15 @@ plt.show()  # Beautiful complex-plane visualization
 
 ### 4. Example Appendix Benchmarks
 
-The repository now includes runnable thesis-aligned example scripts under `examples/` that reproduce the appendix figures used for validation:
+The repository includes runnable example scripts under `examples/` that reproduce the benchmark figures used in the thesis appendix. These examples are intended to support validation and reproducibility:
 
 - `appendix_linear_stiff.py` — linear two-time-scale stiff benchmark
 - `appendix_problem_1.py` — scalar decay benchmark
 - `appendix_problem_2.py` — nonlinear Newton / phase-portrait experiment
 - `appendix_problem_4.py` — convergence-order verification
-- `appendix_stiff_van_der_pol.py` — stiffness comparison for different `mu`
+- `appendix_stiff_van_der_pol.py` — stiffness comparison across values of `mu`
 
-These scripts generate the figure outputs in `examples/figures/` and can be run directly from the repository root.
+These scripts generate the corresponding figures in `examples/figures/` and can be run directly from the repository root.
 
 ---
 
@@ -240,32 +240,29 @@ Solvers print headers, progress, and detailed summaries:
 
 ## Project Structure
 
-### Installation Path
+### Repository Layout
 ```
 numanalytica/
-├── pyproject.toml          # Modern PEP 517 configuration
-├── setup.py               # Legacy (backwards compatibility)
+├── pyproject.toml          # Package metadata and build configuration
+├── setup.py                # Backward-compatibility shim
 ├── src/
-│   └── numanalytica/      # Package source
-├── tests/                 # Test suite (TODO)
-├── examples/              # Jupyter notebooks (TODO)
-├── docs/                  # Sphinx documentation (TODO)
-└── README.md
+│   └── numanalytica/       # Source package
+├── examples/               # Runnable appendix and benchmark examples
+├── docs/                   # Documentation resources
+├── tests/                  # Test suite
+├── README.md               # Project homepage
+└── HISTORY.md              # Release history
 ```
-
-### From Old to New
-✗ Old: `numanalytica/roots/*.py` (procedural)
-✓ New: `src/numanalytica/roots/*.py` (OOP, BaseSolver inheritance)
 
 ---
 
 ## Testing
 
 ```bash
-# Run test suite (after implementing tests/)
+# Run the test suite
 pytest tests/ -v
 
-# Run demo script
+# Run the demo script
 python demo.py
 ```
 
@@ -328,14 +325,14 @@ print(table_latex)  # Paste into thesis!
 
 ## Development Status
 
-- ✅ Core module (exceptions, results, logger)
-- ✅ Differentiation (CSD, finite differences, Jacobian)
-- ✅ Root-finding (6 methods, OOP refactored)
-- ✅ ODE solvers (Explicit Euler, Backward Euler)
-- ✅ Stability analysis (region visualization)
-- ✅ Benchmarks (Van der Pol)
-- ⏳ Tests (pytest suite)
-- ⏳ Documentation (Sphinx + notebooks)
+- ✅ Core numerical infrastructure
+- ✅ Differentiation utilities and Jacobian tools
+- ✅ Root-finding methods
+- ✅ ODE solvers, including implicit Backward Euler
+- ✅ Stability-region analysis and plotting
+- ✅ Benchmark and appendix example scripts
+- ✅ Publication-facing documentation updates
+- ⏳ Expanded formal test coverage and further documentation work
 
 ---
 
@@ -370,10 +367,10 @@ Supervisor: Dr. Hamzat, Jamiu O.
 
 ## Contact
 
-📧 amiks262@gmail.com  
+📧 ayomikun.kolailugbo@gmail.com
 🔗 [GitHub](https://github.com/A-MIKs/numanalytica)
 
 ---
 
-**Last Updated:** July 2026  
-**Status:** Active Development
+**Last Updated:** September 2026
+**Status:** Thesis-ready demonstration repository

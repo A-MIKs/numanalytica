@@ -11,7 +11,7 @@
 ### Validation Highlights
 - Verified all appendix example scripts execute successfully from the repository root
 - Confirmed generated figures are reproducible under `examples/figures/`
-- Clarified that the current implementation supports a stable stiff linear benchmark while not claiming full canonical Robertson robustness
+- Clarified that the current implementation supports a stable stiff linear benchmark without claiming canonical Robertson robustness
 
 ---
 
@@ -79,7 +79,7 @@
 - BDF2 stability: Correctly identifies stable/unstable regions on complex plane
 
 ### Documentation
-- Comprehensive README with quick-start examples
+- README with quick-start examples
 - Inline code documentation for all public APIs
 - Thesis action plan tracking
 - Architecture documentation
@@ -88,25 +88,25 @@
 
 ## Development Timeline
 
-### Phase 1: Initial Audit & Critical Fixes (April 1-15, 2026)
+### Phase 1: Initial Audit & Critical Fixes
 - Comprehensive codebase audit identifying 9+ issues across 3 severity tiers
 - Fixed 5 mathematical bugs affecting core solver correctness
 - CSD dtype fix enabling accurate Jacobian computation for systems
 - All critical blockers resolved
 
-### Phase 2: BDF & Stability Analysis (April 15-May 15, 2026)
+### Phase 2: BDF & Stability Analysis
 - BDF-2 characteristic polynomial correction (fundamental math error)
 - Root selection strategy verified for multistep stability
 - Stability region visualization and A-stability analysis tools
 - Dahlquist test utilities for stiff problem testing
 
-### Phase 3: Robustness & Integration (May 15-June 1, 2026)
+### Phase 3: Robustness & Integration
 - Floating-point accumulation guard fixed for 100+ step integrations
 - Newton-Raphson system solver with reusable LU decomposition
 - Backward Euler implicit step solver with accurate convergence tracking
 - End-to-end integration tests passing
 
-### Phase 4: Publication Preparation (June 1-23, 2026)
+### Phase 4: Publication Preparation
 - GitHub repository initialized and pushed
 - README restructured for GitHub display
 - Cleanup phase: 7 quality improvements and bug fixes
@@ -117,14 +117,12 @@
 
 ## Version Roadmap (Future)
 
-### [0.3.0] (Planned)
+### [1.0.0] (Planned - Thesis Release)
 - Full BDF multistep family (BDF-3 through BDF-6)
 - Adaptive step-size control
 - Implicit-explicit (IMEX) integrators
 - Extensive pytest test suite
 - Performance benchmarking suite
-
-### [1.0.0] (Planned - Thesis Release)
 - Comprehensive documentation with mathematical background
 - Publication-ready code with full type hints
 - PyPI release
@@ -132,7 +130,7 @@
 
 ---
 
-## Known Limitations (v0.2.0)
+## Known Limitations (v0.3.0)
 
 1. **Single-step vs Multistep**: BDF-2 exported as stability analysis only; no dedicated BDF-2 solver class
 2. **Step Size Control**: Fixed step size only; no adaptive stepping
@@ -146,8 +144,8 @@
 If you use NumAnalytica in academic work, please cite:
 
 ```
-Kola-Ilugbo Ayomikun (2026). 
-"Implementation and Stability Analysis of Backward Differentiation Formulas for Stiff Differential Equations: The NumAnalytica Library Approach."
+Ayomikun Kola-Ilugbo (2026).
+"Implementation and Stability Analysis of Backward Differentiation Formulas: The NumAnalytica Library Approach."
 B.Sc. Thesis, University of Lagos.
 ```
 
@@ -155,7 +153,7 @@ B.Sc. Thesis, University of Lagos.
 
 ## Contributors
 
-- **Kola-Ilugbo Ayomikun** — Project creator and lead developer
+- **Ayomikun Kola-Ilugbo** — Project creator and lead developer
 - **GitHub Copilot** — Code review, debugging, and optimization assistance
 
 ---

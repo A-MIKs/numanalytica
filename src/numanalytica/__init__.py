@@ -13,8 +13,8 @@ Key Features:
     - Pedagogical iteration logging for educational transparency
 """
 
-__author__ = "Kola-Ilugbo Ayomikun"
-__email__ = "amiks262@gmail.com"
+__author__ = "Ayomikun Kola-Ilugbo"
+__email__ = "ayomikun.kolailugbo@gmail.com"
 __version__ = "0.3.0"
 
 # Benchmarks module

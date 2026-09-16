@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT" }
 authors = [
-    { name = "Kola-Ilugbo Ayomikun", email = "amiks262@gmail.com" },
+    { name = "Ayomikun Kola-Ilugbo", email = "ayomikun.kolailugbo@gmail.com" },
 ]
 keywords = [
     "numerical analysis",
