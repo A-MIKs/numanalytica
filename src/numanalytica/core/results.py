@@ -201,17 +201,27 @@ class IntegrationResult(SolverResult):
     def __str__(self) -> str:
         """Return a formatted summary specific to ODE integration."""
         status = "✓ Converged" if self.converged else "✗ Failed"
+        time_span = "N/A"
+        if len(self.t) > 0:
+            time_span = f"[{self.t[0]:.2e}, {self.t[-1]:.2e}]"
+
+        variables = 1
+        if len(self.y.shape) > 1 and self.y.size > 0:
+            variables = self.y.shape[1]
+
+        avg_newton = np.mean(self.newton_iterations) if self.newton_iterations else 0.0
+
         return (
             f"\n{'='*60}\n"
             f"  ODE Integration Result\n"
             f"{'='*60}\n"
             f"Status:                {status}\n"
-            f"Time span:             [{self.t[0]:.2e}, {self.t[-1]:.2e}]\n"
+            f"Time span:             {time_span}\n"
             f"Solution points:       {len(self.t)}\n"
-            f"Variables:             {self.y.shape[1] if len(self.y.shape) > 1 else 1}\n"
+            f"Variables:             {variables}\n"
             f"RHS Evaluations:       {self.function_evaluations}\n"
             f"Jacobian Evaluations:  {self.jacobian_evaluations}\n"
-            f"Avg Newton Iters/Step: {np.mean(self.newton_iterations):.2f}\n"
+            f"Avg Newton Iters/Step: {avg_newton:.2f}\n"
             f"Computation Time:      {self.elapsed_time:.4f} s\n"
             f"Message:               {self.message}\n"
             f"{'='*60}\n"

@@ -1,5 +1,20 @@
 # NumAnalytica Release History
 
+## [0.3.1] - 2026-10-01
+
+### Maintenance and validation updates
+- Fixed several edge-case issues in the core solver workflows, including zero-iteration handling, invalid step-size validation, and safer reporting when integration results are empty or fail
+- Added regression coverage for the core numerical workflows and solver API contract checks
+- Corrected `t_eval` handling so explicit and implicit Euler solvers honor user-specified output times
+- Implemented the documented `method` dispatch for `NewtonRaphson`, including support for `complex_step`, `finite_diff`, and `analytical` derivative selection
+- Tightened the library’s reliability without changing its educational focus or numerical-analysis intent
+
+### Validation Highlights
+- Verified the project with `pytest -q`: 7 passing checks across the current core functionality
+- Confirmed the main solver workflows behave consistently under the tested edge cases and API contracts
+
+---
+
 ## [0.3.0] - 2026-08-04
 
 ### Major Updates

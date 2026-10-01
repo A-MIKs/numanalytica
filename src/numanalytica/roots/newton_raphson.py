@@ -12,7 +12,11 @@ import numpy as np
 
 from numanalytica.core import BaseSolver, RootResult
 from numanalytica.core.exceptions import ConvergenceError, DivergenceError
-from numanalytica.differentiation import JacobianComputer, complex_step_derivative
+from numanalytica.differentiation import (
+    JacobianComputer,
+    complex_step_derivative,
+    finite_difference_centered,
+)
 from numanalytica.roots.utils import get_initial_interval
 
 
@@ -128,16 +132,36 @@ class NewtonRaphson(BaseSolver):
         x = float(x0)
         converged = False
         message = "max iterations reached"
+        iteration = -1
+        f_x = np.nan
+        residual = np.inf
 
         # Setup derivative computation
-        if self.fprime is None:
-            # Use automatic differentiation
+        method = self.method.lower()
+        if method in {"analytical", "exact"}:
+            if self.fprime is None:
+                raise ValueError("fprime must be provided when method='analytical'.")
+
+            def compute_derivative(x_val):
+                self._derivative_evals += 1
+                return self.fprime(x_val, *args)
+
+        elif method in {"complex_step", "complexstep"}:
+
             def compute_derivative(x_val):
                 self._derivative_evals += 1
                 return complex_step_derivative(self.f, x_val, args=args)
 
+        elif method in {"finite_diff", "finite_difference"}:
+
+            def compute_derivative(x_val):
+                self._derivative_evals += 1
+                return finite_difference_centered(self.f, x_val, args=args)
+
         else:
-            compute_derivative = lambda x_val: self.fprime(x_val, *args)
+            raise ValueError(
+                "Unsupported derivative method. Use 'complex_step', 'finite_diff', or 'analytical'."
+            )
 
         # Main iteration loop
         for iteration in range(maxiter):
@@ -190,12 +214,14 @@ class NewtonRaphson(BaseSolver):
             x = x_next
 
         elapsed = time.time() - start_time
+        final_iterations = max(iteration + 1, 0)
+        final_residual = abs(f_x) if np.isfinite(f_x) and converged else residual
 
         result = RootResult(
             solution=x if converged else None,
             converged=converged,
-            iterations=iteration + 1,
-            residual=abs(f_x) if converged else np.inf,
+            iterations=final_iterations,
+            residual=final_residual,
             tolerance=tol,
             message=message,
             elapsed_time=elapsed,
@@ -283,6 +309,8 @@ class NewtonRaphsonSystem(BaseSolver):
         x = np.asarray(x0, dtype=float)
         converged = False
         message = "max iterations reached"
+        iteration = -1
+        residual = np.inf
         lu_cache = None
 
         # Setup Jacobian computation
@@ -348,11 +376,12 @@ class NewtonRaphsonSystem(BaseSolver):
             x = x_next
 
         elapsed = time.time() - start_time
+        final_iterations = max(iteration + 1, 0)
 
         result = RootResult(
             solution=x if converged else None,
             converged=converged,
-            iterations=iteration + 1,
+            iterations=final_iterations,
             residual=residual,
             tolerance=tol,
             message=message,

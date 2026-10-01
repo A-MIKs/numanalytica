@@ -98,48 +98,66 @@ class BackwardEuler(BaseIntegrator):
         if h is None:
             h = (tf - t0) / 100
 
-        h = min(h, tf - t0)
+        if not np.isfinite(h) or h <= 0:
+            raise ValueError("h must be positive and finite.")
+
+        if t_eval is not None:
+            t_eval = np.asarray(t_eval, dtype=float).ravel()
+            if t_eval.size == 0:
+                raise ValueError("t_eval must not be empty.")
+            if not np.all(np.isfinite(t_eval)):
+                raise ValueError("t_eval contains non-finite values.")
+            if np.any(t_eval < min(t0, tf)) or np.any(t_eval > max(t0, tf)):
+                raise ValueError("t_eval values must lie within [t0, tf].")
+            t_points = np.unique(np.concatenate(([t0], t_eval, [tf])))
+            t_points = t_points[np.argsort(t_points)]
+        else:
+            h = min(h, tf - t0)
+            t_points = [t0]
+            while t_points[-1] < tf - h * 0.5:
+                next_t = min(t_points[-1] + h, tf)
+                t_points.append(next_t)
+                if next_t >= tf - 1e-15:
+                    break
+            t_points = np.asarray(t_points, dtype=float)
 
         # Solution arrays
-        t_solution = [t0]
+        t_solution = [t_points[0]]
         y_solution = [y0.copy()]
 
-        t = t0
+        t = t_points[0]
         y = y0.copy()
         iteration = 0
         last_residual = 0.0
 
         # Create Newton-Raphson solver once (reuse across steps)
         solver = NewtonRaphsonSystem(
-            lambda y_next: y_next,  # Placeholder, will be redefined each step
-            jacobian=lambda y_next: np.eye(n),  # Placeholder
+            lambda y_next: y_next,
+            jacobian=lambda y_next: np.eye(n),
             verbose=False,
         )
 
-        while t < tf - h * 0.5:  # Avoid floating-point errors near tf
-            h_step = min(h, tf - t)
-            t_next = t + h_step
+        for t_next in t_points[1:]:
+            h_step = t_next - t
+            if h_step <= 0:
+                continue
 
-            # Define the implicit equation: G(y_{n+1}) = y_{n+1} - y_n - h*f(t_{n+1}, y_{n+1}) = 0
-            def implicit_equation(y_next):
-                """The residual function for Newton's method."""
-                rhs = self.f(t_next, y_next, *args)
-                return y_next - y - h_step * rhs
+            def implicit_equation(y_next, t_target=t_next, h_curr=h_step):
+                """Residual equation for the current implicit step."""
+                rhs = self.f(t_target, y_next, *args)
+                return y_next - y - h_curr * rhs
 
-            def implicit_jacobian(y_next):
-                """Jacobian of the implicit equation (for use in Newton's method)."""
-                # J = I - h * ∂f/∂y
-                J_f = self._evaluate_jacobian(t_next, y_next, args=args)
-                return np.eye(n) - h_step * J_f
+            def implicit_jacobian(y_next, t_target=t_next, h_curr=h_step):
+                """Jacobian of the implicit equation used in Newton's method."""
+                J_f = self._evaluate_jacobian(t_target, y_next, args=args)
+                return np.eye(n) - h_curr * J_f
 
-            # Update solver with current implicit functions
             solver.f = implicit_equation
             solver.jacobian_func = implicit_jacobian
-            solver.logger.clear()  # Clear previous step's logs
+            solver.logger.clear()
 
-            # Solve implicit equation using Newton-Raphson
             result_newton = solver.solve(
-                x0=y,  # Use previous y as initial guess
+                x0=y,
                 tol=newton_tol,
                 maxiter=newton_maxiter,
             )
@@ -163,11 +181,8 @@ class BackwardEuler(BaseIntegrator):
             self._rhs_evals += result_newton.function_evaluations
             self._jacobian_evals += result_newton.derivative_evaluations
             self._newton_iters.append(result_newton.iterations)
-
-            # Update last residual
             last_residual = result_newton.residual
 
-            # Record iteration
             state = {f"y[{i}]": y_next[i] for i in range(min(n, 3))}
             self.logger.record_iteration(
                 iteration=iteration,
@@ -184,7 +199,6 @@ class BackwardEuler(BaseIntegrator):
             y = y_next
             iteration += 1
 
-            # Safety check
             if iteration > 10000:
                 return IntegrationResult(
                     solution=None,
@@ -201,8 +215,6 @@ class BackwardEuler(BaseIntegrator):
                 )
 
         elapsed = time.time() - start_time
-
-        # Record actual step sizes (handle final step that may be smaller)
         actual_step_sizes = []
         for i in range(1, len(t_solution)):
             actual_step_sizes.append(t_solution[i] - t_solution[i - 1])

@@ -2,14 +2,34 @@
 
 ## Overview
 
-**NumAnalytica** is a pedagogical Python library for the numerical solution of stiff ordinary differential equations. The project focuses on transparent, educational implementations of implicit methods, especially Backward Differentiation Formulas (BDFs), and it exposes the internal algorithmic steps so that the numerical behaviour can be inspected directly.
+**NumAnalytica** is a small Python library for solving ordinary differential equations and related numerical-analysis problems with an emphasis on transparency. The project is intended to make the internal steps of the methods visible so that students, researchers, and prototyping workflows can inspect what is happening rather than rely on a black box.
 
-This repository forms the software component of the final-year B.Sc. thesis:
+This repository is the software component of the final-year B.Sc. thesis:
 > *Implementation and Stability Analysis of Backward Differentiation Formulas: The NumAnalytica Library Approach*
 
 ### Key Feature: Complex Step Differentiation
 
-The library uses **Complex Step Differentiation (CSD)** to compute Jacobians with near-machine-precision accuracy. This reduces the subtractive-cancellation error that commonly affects finite-difference approximations and improves the reliability of Newton iterations in implicit solvers.
+The library uses **Complex Step Differentiation (CSD)** to compute Jacobians with near-machine-precision accuracy. This avoids the cancellation issues that often affect finite-difference approximations and makes Newton-type iterations more reliable in implicit solver workflows.
+
+---
+
+## Current verified status
+
+The project currently has a small regression suite covering the core solver workflows and several API-contract checks. The emphasis is on correctness and transparency rather than broad production coverage.
+
+Verified in the current workspace with:
+
+```bash
+pytest -q
+```
+
+Result:
+
+```text
+7 passed in 2.12s
+```
+
+The validated scenarios include scalar root finding, Euler integration, output time selection, and basic solver error handling. The library remains focused on a compact, educational numerical-analysis stack rather than a full-featured commercial solver package.
 
 ---
 
@@ -233,8 +253,8 @@ Solvers print headers, progress, and detailed summaries:
 | **Stability regions** | ✓ Visualized | ✗ Not exposed |
 | **Method education** | ✓ Explicit steps | ✗ Hidden |
 | **Jacobian control** | ✓ CSD available | Limited |
-| **Speed** | Pedagogical | Optimized |
-| **Purpose** | Teaching | Production |
+| **Speed** | Educational | Optimized |
+| **Purpose** | Teaching and experimentation | Production |
 
 ---
 
@@ -249,10 +269,27 @@ numanalytica/
 │   └── numanalytica/       # Source package
 ├── examples/               # Runnable appendix and benchmark examples
 ├── docs/                   # Documentation resources
-├── tests/                  # Test suite
+├── tests/                  # Regression and validation tests
 ├── README.md               # Project homepage
 └── HISTORY.md              # Release history
 ```
+
+---
+
+## Scope and limitations
+
+NumAnalytica is intentionally focused on transparent numerical methods rather than production-scale solver infrastructure. It is most useful for:
+
+- learning how implicit time-stepping and Newton iteration work in practice
+- comparing analytical and numerical differentiation approaches
+- inspecting iteration history and convergence behavior in a controlled setting
+
+Current limitations include:
+
+- fixed-step solvers rather than a full adaptive-step framework
+- no full multistep BDF family beyond the current educational implementation scope
+- focus on pedagogical clarity more than industrial optimization
+- a smaller test surface than a long-lived production numerical library
 
 ---
 
@@ -323,6 +360,14 @@ print(table_latex)  # Paste into thesis!
 
 ---
 
+## Recent fixes and validation
+
+- ✅ `t_eval` is now respected by both explicit and implicit Euler solvers
+- ✅ `NewtonRaphson(method=...)` now actually follows the selected derivative strategy
+- ✅ zero-iteration and failure-case behavior is handled more safely
+- ✅ step-size validation prevents invalid integration inputs from silently propagating
+- ✅ regression tests cover the main solver contracts and edge cases
+
 ## Development Status
 
 - ✅ Core numerical infrastructure
@@ -331,8 +376,8 @@ print(table_latex)  # Paste into thesis!
 - ✅ ODE solvers, including implicit Backward Euler
 - ✅ Stability-region analysis and plotting
 - ✅ Benchmark and appendix example scripts
-- ✅ Publication-facing documentation updates
-- ⏳ Expanded formal test coverage and further documentation work
+- ✅ Basic regression validation for the current solver workflows
+- ⏳ Continued expansion of formal test coverage and documentation depth
 
 ---
 
@@ -372,5 +417,5 @@ Supervisor: Dr. Hamzat, Jamiu O.
 
 ---
 
-**Last Updated:** September 2026
-**Status:** Thesis-ready demonstration repository
+**Last Updated:** October 2026
+**Status:** Validated pedagogical numerical-analysis library
