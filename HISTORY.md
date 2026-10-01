@@ -36,7 +36,7 @@
 
 ### Major Features
 - **Backward Differentiation Formulas (BDF)** for stiff ODEs with A-stability analysis
-- **Complex Step Differentiation (CSD)** for machine-precision Jacobians (error ~10⁻¹⁵)
+- **Complex Step Differentiation (CSD)**, which achieved near-machine-precision Jacobians for suitable functions and step sizes (error ~10⁻¹⁵ in the tested case)
 - **Implicit ODE Solvers**: Backward Euler (BDF-1, A-stable)
 - **Root-Finding Methods**: Newton-Raphson, Bisection, Secant, False Position, Fixed Point, Müller
 - **Stability Analysis**: Region visualization and A-stability checking
@@ -134,7 +134,10 @@
 
 ## Version Roadmap (Future)
 
-### [1.0.0] (Planned - Thesis Release)
+### [1.0.0] (Possible future major release; not the thesis release)
+
+The following items are exploratory directions, not commitments or a release schedule:
+
 - Full BDF multistep family (BDF-3 through BDF-6)
 - Adaptive step-size control
 - Implicit-explicit (IMEX) integrators
@@ -147,7 +150,7 @@
 
 ---
 
-## Known Limitations (v0.3.0)
+## Known Limitations (v0.3.1)
 
 1. **Single-step vs Multistep**: BDF-2 exported as stability analysis only; no dedicated BDF-2 solver class
 2. **Step Size Control**: Fixed step size only; no adaptive stepping

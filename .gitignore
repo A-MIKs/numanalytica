@@ -78,3 +78,4 @@ examples/figures/*.png
 .tmp.drive.download/
 test_fixes.py
 verify_fixes.py
+linkedin_prothero_robinson.ipynb

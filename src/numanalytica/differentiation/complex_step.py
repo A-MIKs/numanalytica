@@ -10,14 +10,19 @@ Mathematical Foundation:
 
         f'(x) ≈ Im(f(x + ih)) / h
 
-    where h is a small real step (not size-limited by precision), and the
-    imaginary part extracts the derivative to machine precision.
+    where h is a small real step. For suitable functions and step sizes, CSD
+    can achieve near machine precision by avoiding subtractive cancellation.
+    The function must preserve the complex perturbation and have suitable
+    analytic behavior near the evaluation point.
 
 Key Advantages over Finite Differences:
-    1. Arbitrary step size h (no balance between truncation and round-off)
-    2. Machine precision (no subtractive cancellation)
-    3. Errors O(h²) instead of O(1/h) or O(h)
-    4. Ideal for Newton-Raphson iterations in implicit solvers
+    1. The step size is not subject to the same truncation/round-off balance
+       as finite differences.
+    2. The derivative estimate has O(h²) truncation error for suitable smooth,
+       analytic functions, without the usual 1/h amplification of round-off
+       in finite-difference formulas. Floating-point and implementation errors
+       still remain.
+    3. Useful for Newton-Raphson iterations in implicit solvers.
 
 References:
     Martins, J.R.R.A., Sturdza, P., & Alonso, J.J. (2003).
@@ -43,13 +48,17 @@ def complex_step_derivative(
     ----------
     f : Callable
         Function for which to compute the derivative.
-        Must accept complex-valued inputs and return complex outputs.
+        Must accept complex-valued inputs and preserve the imaginary
+        perturbation in its output. CSD is generally suitable for functions
+        with an analytic extension near x; real casts or operations that
+        discard or alter the imaginary component can give incorrect results.
         Signature: f(x, *args) -> float or complex
     x : float
         Point at which to evaluate the derivative.
     h : float, default=1e-20
-        Step size. CSD allows very small h without round-off error.
-        Default is near machine precision (~1e-20).
+        Step size. CSD avoids the usual subtractive cancellation and 1/h
+        round-off amplification of finite differences, but accuracy still
+        depends on the function and step size. Default is 1e-20.
     args : Tuple, optional
         Additional arguments to pass to f.
 
@@ -60,8 +69,12 @@ def complex_step_derivative(
 
     Notes
     -----
-    The step size h can be chosen as small as ~1e-20 without encountering
-    round-off errors, unlike finite difference methods.
+    For suitable functions, the O(h²) truncation error can be made small with
+    a very small h without the usual 1/h round-off amplification found in
+    finite differences. This does not eliminate floating-point error, and
+    the function must preserve the complex perturbation and behave analytically
+    near x. A function that casts inputs to real values or discards the
+    imaginary component may return an incorrect derivative.
 
     Examples
     --------
@@ -110,9 +123,13 @@ def complex_step_jacobian(
 
     Notes
     -----
-    This function requires that f is "holomorphic" in the sense that it
-    can accept complex-valued inputs. Most mathematical functions (exp, sin,
-    sqrt, etc.) are holomorphic and will work correctly.
+    The function must preserve complex inputs and have an analytic extension
+    near x. Merely accepting complex-valued inputs is not sufficient: real
+    casts, non-analytic operations, or other operations that discard or alter
+    the imaginary perturbation can produce incorrect derivatives. Accuracy
+    depends on the function and step size; CSD avoids the usual subtractive
+    cancellation and 1/h round-off amplification of finite differences, but
+    does not eliminate all floating-point error.
 
     Examples
     --------

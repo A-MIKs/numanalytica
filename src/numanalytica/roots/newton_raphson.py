@@ -25,7 +25,8 @@ class NewtonRaphson(BaseSolver):
     Newton-Raphson method for finding roots with high-accuracy derivatives.
 
     This solver uses Complex Step Differentiation by default to compute
-    derivatives with machine precision, avoiding round-off error.
+    derivatives. For suitable functions and step sizes, this can achieve
+    near-machine-precision accuracy while avoiding subtractive cancellation.
 
     Mathematical Background:
         The Newton-Raphson method iterates:
@@ -41,9 +42,11 @@ class NewtonRaphson(BaseSolver):
     f : callable
         Function or system F(x) -> float or array.
     fprime : callable, optional
-        Analytical derivative f'(x). If None, uses Complex Step Differentiation.
+        Analytical derivative f'(x). Used only when method="analytical" (or
+        "exact"); it is ignored for method="complex_step" and "finite_diff".
     method : str, default="complex_step"
         Derivative method: "complex_step", "finite_diff", or "analytical".
+        With the default "complex_step", fprime is not used.
     verbose : bool, default=True
         Enable iteration logging.
 

@@ -9,7 +9,7 @@ This repository is the software component of the final-year B.Sc. thesis:
 
 ### Key Feature: Complex Step Differentiation
 
-The library uses **Complex Step Differentiation (CSD)** to compute Jacobians with near-machine-precision accuracy. This avoids the cancellation issues that often affect finite-difference approximations and makes Newton-type iterations more reliable in implicit solver workflows.
+The library uses **Complex Step Differentiation (CSD)** to compute Jacobians. For suitable functions that preserve the complex perturbation, and with appropriate step sizes, CSD can achieve near-machine-precision accuracy. It avoids the subtractive cancellation that often affects finite-difference approximations and can support Newton-type iterations in implicit solver workflows.
 
 ---
 
@@ -28,7 +28,7 @@ Result:
 
 ```text
 All 5 example scripts completed successfully.
-10 passed in 1.53s
+10 tests passed.
 ```
 
 The validated scenarios include scalar root finding, implicit Euler integration, output time selection, appendix benchmark regeneration, and key solver error handling. The library remains intentionally focused on a pedagogical numerical-analysis stack rather than a full-featured commercial solver package.
@@ -86,7 +86,7 @@ pip install -e .
 
 ## Quick Start
 
-### 1. Root-Finding (Automatic Differentiation)
+### 1. Root-Finding (Complex-Step Numerical Differentiation)
 
 ```python
 from numanalytica import NewtonRaphson
@@ -187,20 +187,28 @@ This command executes each appendix script in `examples/` and fails immediately 
 
 ### 🔷 Complex Step Differentiation (differentiation/complex_step.py)
 
+Complex Step Differentiation (CSD) is a numerical differentiation technique,
+not automatic differentiation. For suitable functions and step sizes, it can
+achieve near-machine-precision derivatives by avoiding subtractive cancellation.
+The function must preserve the complex perturbation and behave analytically near
+the evaluation point. A real cast, non-analytic operation, or other operation
+that discards or alters the imaginary component can produce incorrect results.
+
 ```python
 from numanalytica import complex_step_derivative
 
 def f(x):
     return np.sin(x) * np.exp(-x**2/2)
 
-# Compute f'(x) with machine precision
+# CSD can approach machine precision for suitable functions and step sizes
 fprime = complex_step_derivative(f, x=1.5, h=1e-20)
-# Error ~ 10^-16 (much better than finite differences!)
+# Accuracy depends on f and h; CSD avoids subtractive cancellation.
 ```
 
 **Why it matters:**
-- Avoids the round-off vs. truncation error balance problem
-- Jacobians for Newton-Raphson are accurate to machine precision
+- Has O(h^2) truncation error for suitable analytic functions
+- Avoids the usual 1/h amplification of round-off error in finite differences
+- Can provide near-machine-precision Jacobians for suitable functions and step sizes
 - Enables fast, robust convergence of implicit solvers
 
 ### 🔷 OOP Root-Finding (roots/)
@@ -279,12 +287,12 @@ Solvers print headers, progress, and detailed summaries:
 
 | Feature | NumAnalytica | SciPy odeint |
 |---------|--------------|--------------|
-| **Iteration details** | ✓ Full transparency | ✗ Black-box |
+| **Iteration details** | ✓ Full transparency | Solver internals are not generally presented for inspection |
 | **Stability regions** | ✓ Visualized | ✗ Not exposed |
-| **Method education** | ✓ Explicit steps | ✗ Hidden |
+| **Method education** | ✓ Explicit steps | Production-oriented, not focused on exposing each method step |
 | **Jacobian control** | ✓ CSD available | Limited |
 | **Speed** | Educational | Optimized |
-| **Purpose** | Teaching and experimentation | Production |
+| **Purpose** | Teaching and experimentation | Production-oriented scientific computing |
 
 ---
 
@@ -386,9 +394,9 @@ region.plot_region(ax=ax2)
 plt.tight_layout()
 plt.show()
 
-# 5. Export iteration table for thesis
+# 5. Export iteration table
 table_latex = solver.get_iteration_table()
-print(table_latex)  # Paste into thesis!
+print(table_latex)
 ```
 
 ---
