@@ -15,21 +15,41 @@ The library uses **Complex Step Differentiation (CSD)** to compute Jacobians wit
 
 ## Current verified status
 
-The project currently has a small regression suite covering the core solver workflows and several API-contract checks. The emphasis is on correctness and transparency rather than broad production coverage.
+The project currently has a compact regression suite covering the core solver workflows, solver edge cases, and appendix reproducibility checks. The emphasis is on correctness, transparency, and reproducibility rather than broad production coverage.
 
 Verified in the current workspace with:
 
 ```bash
+python verify_examples.py
 pytest -q
 ```
 
 Result:
 
 ```text
-7 passed in 2.12s
+All 5 example scripts completed successfully.
+10 passed in 1.53s
 ```
 
-The validated scenarios include scalar root finding, Euler integration, output time selection, and basic solver error handling. The library remains focused on a compact, educational numerical-analysis stack rather than a full-featured commercial solver package.
+The validated scenarios include scalar root finding, implicit Euler integration, output time selection, appendix benchmark regeneration, and key solver error handling. The library remains intentionally focused on a pedagogical numerical-analysis stack rather than a full-featured commercial solver package.
+
+---
+
+## Thesis-ready scope and limitations
+
+This release is best understood as a thesis-ready numerical-analysis artifact rather than a general-purpose production library.
+
+The current implementation is intentionally scoped to the methods and ideas directly supported by the project narrative:
+
+- scalar and system Newton-type solvers
+- bisection, secant, false position, fixed-point, and Muller methods
+- backward Euler / implicit integration workflows
+- complex-step differentiation for accurate derivative evaluation
+- stability-region and benchmark visualizations
+
+The project is not yet a broad-purpose scientific software platform. It does not aim to match the breadth, ecosystem integration, or numerical robustness guarantees of mature libraries such as SciPy, PETSc, or Julia’s DifferentialEquations ecosystem. Instead, the goal is to provide a transparent, educational, and reproducible implementation of the methods presented in the thesis.
+
+For the thesis release, this is a strength: the code is explicit, inspectable, and methodologically aligned with the work being demonstrated.
 
 ---
 
@@ -37,14 +57,14 @@ The validated scenarios include scalar root finding, Euler integration, output t
 
 ```
 src/numanalytica/
-├── core/                    # Foundation: exceptions, results, logger, base class
-├── differentiation/         # Complex Step & Finite Differences
-├── roots/                   # 6 root-finding algorithms (all OOP)
+├── core/                    # Foundation: exceptions, results, logger, and base classes
+├── differentiation/         # Complex-step and finite-difference utilities
+├── roots/                   # Root-finding algorithms
 ├── ode/
-│   ├── explicit/           # Forward Euler (baseline)
-│   └── implicit/           # Backward Euler (A-stable BDF)
-├── stability/              # A-Stability visualization
-├── benchmarks/             # Van der Pol oscillator
+│   ├── explicit/           # Explicit integration methods
+│   └── implicit/           # Implicit integration methods, including backward Euler
+├── stability/              # Stability-region analysis and visualizations
+├── benchmarks/             # Benchmark ODE models and problem definitions
 └── visualization/          # Plotting utilities
 ```
 
@@ -150,6 +170,16 @@ The repository includes runnable example scripts under `examples/` that reproduc
 - `appendix_stiff_van_der_pol.py` — stiffness comparison across values of `mu`
 
 These scripts generate the corresponding figures in `examples/figures/` and can be run directly from the repository root.
+
+### Reproducibility and Appendix Validation
+
+To reproduce the thesis appendix figures and confirm the example scripts still pass in a fresh environment, run:
+
+```bash
+python verify_examples.py
+```
+
+This command executes each appendix script in `examples/` and fails immediately if any benchmark or figure-generation routine stops working. This is the most direct researcher-facing check before assessing the numerical claims of the work.
 
 ---
 
@@ -283,6 +313,7 @@ NumAnalytica is intentionally focused on transparent numerical methods rather th
 - learning how implicit time-stepping and Newton iteration work in practice
 - comparing analytical and numerical differentiation approaches
 - inspecting iteration history and convergence behavior in a controlled setting
+- reproducing the benchmark experiments and stability analyses used in the thesis
 
 Current limitations include:
 
@@ -290,6 +321,8 @@ Current limitations include:
 - no full multistep BDF family beyond the current educational implementation scope
 - focus on pedagogical clarity more than industrial optimization
 - a smaller test surface than a long-lived production numerical library
+
+This is the appropriate scope for a thesis-ready release: the library demonstrates the core methods and validates the claims of the work without overstating its maturity as a general-purpose scientific software platform.
 
 ---
 
@@ -362,11 +395,13 @@ print(table_latex)  # Paste into thesis!
 
 ## Recent fixes and validation
 
-- ✅ `t_eval` is now respected by both explicit and implicit Euler solvers
-- ✅ `NewtonRaphson(method=...)` now actually follows the selected derivative strategy
+- ✅ `t_eval` is respected by both explicit and implicit Euler solvers
+- ✅ `NewtonRaphson(method=...)` follows the selected derivative strategy
 - ✅ zero-iteration and failure-case behavior is handled more safely
-- ✅ step-size validation prevents invalid integration inputs from silently propagating
+- ✅ step-size and dimension validation prevents invalid integration inputs from silently propagating
+- ✅ RHS/Jacobian consistency checks fail early with clear, actionable error messages
 - ✅ regression tests cover the main solver contracts and edge cases
+- ✅ appendix benchmark scripts are reproducible via `python verify_examples.py`
 
 ## Development Status
 
@@ -376,8 +411,8 @@ print(table_latex)  # Paste into thesis!
 - ✅ ODE solvers, including implicit Backward Euler
 - ✅ Stability-region analysis and plotting
 - ✅ Benchmark and appendix example scripts
-- ✅ Basic regression validation for the current solver workflows
-- ⏳ Continued expansion of formal test coverage and documentation depth
+- ✅ Reproducible validation workflow for the thesis appendix
+- ✅ Thesis-ready release scope and documentation framing
 
 ---
 

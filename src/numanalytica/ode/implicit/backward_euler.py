@@ -95,6 +95,12 @@ class BackwardEuler(BaseIntegrator):
         y0 = self.validate_initial_conditions(t0, tf, y0)
         n = y0.size
 
+        initial_rhs = np.asarray(self.f(t0, y0, *args), dtype=float).flatten()
+        if initial_rhs.size != n:
+            raise ValueError(
+                f"RHS must match state dimension: expected {n}, got {initial_rhs.size}."
+            )
+
         if h is None:
             h = (tf - t0) / 100
 
@@ -144,7 +150,11 @@ class BackwardEuler(BaseIntegrator):
 
             def implicit_equation(y_next, t_target=t_next, h_curr=h_step):
                 """Residual equation for the current implicit step."""
-                rhs = self.f(t_target, y_next, *args)
+                rhs = np.asarray(self.f(t_target, y_next, *args), dtype=float).flatten()
+                if rhs.size != y.size:
+                    raise ValueError(
+                        f"RHS must match state dimension: expected {y.size}, got {rhs.size}."
+                    )
                 return y_next - y - h_curr * rhs
 
             def implicit_jacobian(y_next, t_target=t_next, h_curr=h_step):

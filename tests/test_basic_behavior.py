@@ -96,3 +96,41 @@ def test_newton_raphson_zero_maxiter_is_safe():
 
     assert not result.converged
     assert result.iterations == 0
+
+
+def test_newton_raphson_rejects_non_finite_initial_guess():
+    solver = NewtonRaphson(lambda x: x**2 - 4, verbose=False)
+
+    with pytest.raises(ValueError, match="x0 must be finite"):
+        solver.solve(x0=np.nan)
+
+
+def test_backward_euler_rejects_invalid_jacobian_shape():
+    def rhs(t, y):
+        return np.array([-y[0], -y[1]])
+
+    solver = BackwardEuler(
+        rhs,
+        jacobian=lambda t, y: np.array([[-1.0, 0.0]]),
+        verbose=False,
+    )
+
+    with pytest.raises(ValueError, match="Jacobian must be square"):
+        solver.solve(
+            t0=0.0,
+            tf=1.0,
+            y0=np.array([1.0, 2.0]),
+            h=0.1,
+        )
+
+
+def test_backward_euler_rejects_rhs_dimension_mismatch():
+    solver = BackwardEuler(lambda t, y: -y[0], verbose=False)
+
+    with pytest.raises(ValueError, match="RHS must match state dimension"):
+        solver.solve(
+            t0=0.0,
+            tf=1.0,
+            y0=np.array([1.0, 2.0]),
+            h=0.1,
+        )

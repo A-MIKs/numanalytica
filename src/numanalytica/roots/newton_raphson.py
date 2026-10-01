@@ -112,6 +112,8 @@ class NewtonRaphson(BaseSolver):
         if x0 is None:
             if bracket is not None:
                 # Use bracket midpoint as initial guess
+                if not np.all(np.isfinite(bracket)):
+                    raise ValueError("bracket values must be finite.")
                 x0 = sum(bracket) / 2
             else:
                 # Attempt automatic bracketing
@@ -128,6 +130,9 @@ class NewtonRaphson(BaseSolver):
                         message=f"Failed to find initial bracket: {e}",
                         elapsed_time=time.time() - start_time,
                     )
+
+        if x0 is None or not np.isfinite(x0):
+            raise ValueError("x0 must be finite.")
 
         x = float(x0)
         converged = False
@@ -307,6 +312,9 @@ class NewtonRaphsonSystem(BaseSolver):
         )
 
         x = np.asarray(x0, dtype=float)
+        if x.size == 0 or not np.all(np.isfinite(x)):
+            raise ValueError("x0 must contain only finite values.")
+
         converged = False
         message = "max iterations reached"
         iteration = -1

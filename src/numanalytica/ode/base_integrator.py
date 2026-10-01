@@ -81,6 +81,8 @@ class BaseIntegrator(BaseSolver):
             raise StepSizeError(f"Must have t0 < tf, got t0={t0}, tf={tf}")
 
         y0 = np.asarray(y0, dtype=float).flatten()
+        if y0.size == 0:
+            raise InitialValueError("Initial condition must not be empty.")
         if not np.all(np.isfinite(y0)):
             raise InitialValueError(f"Initial condition contains non-finite values")
 
@@ -142,8 +144,14 @@ class BaseIntegrator(BaseSolver):
         np.ndarray
             dy/dt = f(t, y).
         """
+        rhs = np.asarray(self.f(t, y, *args), dtype=float)
+        rhs = np.asarray(rhs).flatten()
+
+        if rhs.size != y.size:
+            raise ValueError(f"RHS must match state dimension: expected {y.size}, got {rhs.size}.")
+
         self._rhs_evals += 1
-        return np.asarray(self.f(t, y, *args), dtype=float).flatten()
+        return rhs
 
     def _evaluate_jacobian(
         self,
@@ -178,6 +186,12 @@ class BaseIntegrator(BaseSolver):
             J = complex_step_jacobian(f_system, y)
         else:
             J = np.asarray(self.jacobian(t, y), dtype=float)
+
+        expected_shape = (y.size, y.size)
+        if J.shape != expected_shape:
+            raise ValueError(f"Jacobian must be square with shape {expected_shape}, got {J.shape}.")
+        if not np.all(np.isfinite(J)):
+            raise ValueError("Jacobian contains non-finite values.")
 
         self._jacobian_evals += 1
         return J

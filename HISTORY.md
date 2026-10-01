@@ -2,16 +2,18 @@
 
 ## [0.3.1] - 2026-10-01
 
-### Maintenance and validation updates
-- Fixed several edge-case issues in the core solver workflows, including zero-iteration handling, invalid step-size validation, and safer reporting when integration results are empty or fail
-- Added regression coverage for the core numerical workflows and solver API contract checks
-- Corrected `t_eval` handling so explicit and implicit Euler solvers honor user-specified output times
-- Implemented the documented `method` dispatch for `NewtonRaphson`, including support for `complex_step`, `finite_diff`, and `analytical` derivative selection
-- Tightened the library’s reliability without changing its educational focus or numerical-analysis intent
+### Thesis-ready maintenance and validation updates
+- Hardened core API behavior for invalid initial states, non-finite inputs, and mismatched RHS/Jacobian dimensions so failures fail clearly and early
+- Added regression coverage for the core numerical workflows, solver edge cases, and the researcher-facing reproducibility checks
+- Corrected solver behavior around user-specified output times and implicit step validation while preserving the project’s pedagogical focus
+- Implemented and verified the documented `method` dispatch for `NewtonRaphson`, including `complex_step`, `finite_diff`, and `analytical` derivative selection
+- Added a reproducibility runner for the appendix benchmark scripts to support thesis validation and review workflows
+- Tightened reliability without broadening the project beyond its thesis-ready scope
 
 ### Validation Highlights
-- Verified the project with `pytest -q`: 7 passing checks across the current core functionality
-- Confirmed the main solver workflows behave consistently under the tested edge cases and API contracts
+- Verified the appendix scripts with `python verify_examples.py`: all 5 benchmark scripts completed successfully
+- Verified the package with `pytest -q`: 10 passing checks across the current solver workflows and edge cases
+- Confirmed the main solver workflows and benchmark reproductions behave consistently under the tested API contracts
 
 ---
 
