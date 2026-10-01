@@ -70,6 +70,7 @@ Thumbs.db
 demo_output.txt
 stability_comparison.png
 Appendix_A_v3.pdf
+examples/figures/*.png
 .ipynb_checkpoints/
 .tmp.driveupload/
 .tmp.drive.upload/
