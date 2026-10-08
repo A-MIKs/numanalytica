@@ -238,30 +238,6 @@ PRIORITY 4: Documentation
   - API reference documentation
 
 ================================================================================
-IMPORTANT NOTES FOR YOUR SUPERVISOR
-================================================================================
-
-1. This is a TEACHING TOOL, not a production library
-   - Emphasize pedagogical transparency
-   - Show internal iterations/errors
-   - Every step is traceable
-
-2. Complex Step Differentiation is YOUR innovation
-   - Shows machine precision
-   - Eliminates subtractive cancellation
-   - Critical for Newton-Raphson Jacobians
-
-3. Backward Euler demonstrates BDF principal
-   - A-stable (unlike Forward Euler)
-   - Handles stiffness elegantly
-   - Newton-Raphson solves implicit equation
-
-4. Stability region visualization is powerful
-   - Visual proof of theoretical stability
-   - Directly connected to complex analysis
-   - Shows why explicit methods fail on stiff problems
-
-================================================================================
 """
 
 print(__doc__)

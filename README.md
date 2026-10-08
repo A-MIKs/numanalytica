@@ -260,6 +260,7 @@ print(solver.get_iteration_table())  # Formatted table
 ### 2. Unified Result Objects
 
 All solvers return `SolverResult` or subclasses:
+
 ```python
 result.converged        # bool
 result.iterations       # int
@@ -299,6 +300,7 @@ Solvers print headers, progress, and detailed summaries:
 ## Project Structure
 
 ### Repository Layout
+
 ```
 numanalytica/
 ├── pyproject.toml          # Package metadata and build configuration
@@ -427,6 +429,7 @@ print(table_latex)
 ## References
 
 ### Key Papers
+
 - **Martins, J.R.R.A., Sturdza, P., & Alonso, J.J. (2003).** "The complex-step derivative approximation." *ACM Transactions on Mathematical Software*, 29(3), 245-262.
 - **Dahlquist, G. (1963).** "A special stability problem for linear multistep methods." *BIT Numerical Mathematics*, 3(1), 27-43.
 - **Butcher, J.C. (2016).** "Numerical methods for ordinary differential equations" (3rd ed.). John Wiley & Sons.
@@ -455,10 +458,10 @@ Supervisor: Dr. Hamzat, Jamiu O.
 
 ## Contact
 
-📧 ayomikun.kolailugbo@gmail.com
+📧 <ayomikun.kolailugbo@gmail.com>  
 🔗 [GitHub](https://github.com/A-MIKs/numanalytica)
 
 ---
 
-**Last Updated:** October 2026
-**Status:** Validated pedagogical numerical-analysis library
+**Last Updated:** October 2026  
+**Status:** Validated pedagogical numerical-analysis library  
